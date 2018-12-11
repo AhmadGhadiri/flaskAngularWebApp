@@ -3,3 +3,4 @@ flask-mysql==1.4.0
 SQLAlchemy==1.2.14
 marshmallow==2.16.3
 psycopg2-binary==2.7.6.1
+flask-cors==3.0.7
