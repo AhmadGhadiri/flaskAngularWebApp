@@ -1,1 +1,1 @@
-export const API_URL = 'http://0.0.0.0:5002';
+export const API_URL = '/api';

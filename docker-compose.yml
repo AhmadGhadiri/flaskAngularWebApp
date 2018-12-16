@@ -34,6 +34,8 @@ services:
     build: ./backend
     ports:
       - "5000:5000"
+    expose:
+      - 5000
     volumes:
       - /home/ahmad/webApp/backend:/app
     links:
@@ -48,8 +50,24 @@ services:
     build: ./frontend
     ports:
       - 4200:4200
+    expose:
+      - 4200
     volumes:
       - /home/ahmad/webApp/frontend:/app
     links:
       - server
     command: ng serve --host 0.0.0.0 
+
+###################################
+#  set up nginx container
+###################################
+
+  nginx:
+    build: ./nginx
+    # Map Nginx port 80 to the local machine's port 80
+    ports:
+      - "80:80"
+    # Link the client container so that Nginx will have access to it
+    links:
+      - frontend
+      - server
