@@ -5,10 +5,11 @@ from sqlalchemy import create_engine, Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-db_url = '172.17.0.2:5432'
+db_url = 'postgresdb' # the postgres comes from the name of the service in docker compose
 db_name = 'online-exam'
 db_user = 'postgres'
 db_password = '0NLIN3-ex4m'
+
 engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_url}/{db_name}')
 Session = sessionmaker(bind=engine)
 

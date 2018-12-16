@@ -1,11 +1,11 @@
 # this is an official Python runtime, used as the parent image
-FROM nikolaik/python-nodejs:latest
+FROM node:latest
 
-RUN python --version
 RUN node --version
 
 # Install the angular cli
-RUN npm install -g @angular/cli
+RUN npm install -g @angular/cli@7.1.2
+RUN ng --version
 
 
 
@@ -16,10 +16,10 @@ WORKDIR /app
 ADD . /app
 
 # execute everyone's favorite pip command, pip install -r
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN npm install
 
 # unblock port 80 for the Flask app to run on
-EXPOSE 80
+# EXPOSE 80
 
 # execute the Flask app
-CMD ["python", "backend/src/main.py"]
+CMD ["ng", "serve", "--host", "0.0.0.0"]

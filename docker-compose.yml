@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+###################################
+#  set up database container
+###################################
+
+  postgresdb:
+    restart: always
+    image: postgres:10
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=online-exam
+      - POSTGRES_PASSWORD=0NLIN3-ex4m
+
+
+###################################
+#  set up test database container
+###################################
+  testdb:
+    build: ./testDB
+    links:
+      - postgresdb
+    command: ./wait-for-postgres.sh postgresdb psql postgresql://postgres:0NLIN3-ex4m@postgresdb/online-exam 
+
+###################################
+#  set up backend container
+###################################
+
+  server:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - /home/ahmad/webApp/backend:/app
+    links:
+      - postgresdb
+    command: ./wait-for-postgres.sh postgresdb python3 src/main.py
+
+###################################
+#  set up frontend container
+###################################
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 4200:4200
+    volumes:
+      - /home/ahmad/webApp/frontend:/app
+    links:
+      - server
+    command: ng serve --host 0.0.0.0 
