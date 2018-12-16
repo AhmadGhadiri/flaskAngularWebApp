@@ -22,7 +22,7 @@ services:
 ###################################
   testdb:
     build: ./testDB
-    links:
+    depends_on:
       - postgresdb
     command: ./wait-for-postgres.sh postgresdb psql postgresql://postgres:0NLIN3-ex4m@postgresdb/online-exam 
 
@@ -38,7 +38,7 @@ services:
       - 5000
     volumes:
       - /home/ahmad/webApp/backend:/app
-    links:
+    depends_on:
       - postgresdb
     command: ./wait-for-postgres.sh postgresdb python3 src/main.py
 
@@ -54,7 +54,7 @@ services:
       - 4200
     volumes:
       - /home/ahmad/webApp/frontend:/app
-    links:
+    depends_on:
       - server
     command: ng serve --host 0.0.0.0 
 
@@ -68,6 +68,6 @@ services:
     ports:
       - "80:80"
     # Link the client container so that Nginx will have access to it
-    links:
+    depends_on:
       - frontend
       - server
