@@ -36,8 +36,6 @@ services:
       - "5000:5000"
     expose:
       - 5000
-    volumes:
-      - /home/ahmad/webApp/backend:/app
     depends_on:
       - postgresdb
     command: ./wait-for-postgres.sh postgresdb python3 src/main.py
@@ -52,8 +50,6 @@ services:
       - 4200:4200
     expose:
       - 4200
-    volumes:
-      - /home/ahmad/webApp/frontend:/app
     depends_on:
       - server
     command: ng serve --host 0.0.0.0 
