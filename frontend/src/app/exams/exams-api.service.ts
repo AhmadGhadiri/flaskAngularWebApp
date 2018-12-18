@@ -24,4 +24,10 @@ export class ExamsApiService {
           catchError(ExamsApiService._handleError)
       );
   }
+
+  // Post a new exam
+  saveExam(exam: Exam): Observable<any> {
+    return this.http
+      .post(API_URL + '/exams', exam);
+  }
 }
