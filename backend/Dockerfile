@@ -16,6 +16,9 @@ RUN \
  apk add --no-cache python3-dev && \
  apk add --no-cache py-pip build-base
 
+# Adding this back for the wait-for-postgres file
+RUN apk add --update postgresql-client && rm -rf /var/cache/apk/*
+
 RUN python3 -m pip install --trusted-host pypi.python.org -r requirements.txt  
 
 # execute the Flask app
