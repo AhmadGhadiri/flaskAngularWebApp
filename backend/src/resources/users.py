@@ -6,7 +6,7 @@ from entities.entity import Session
 from entities.user import User, UserSchema
 
 parser = reqparse.RequestParser()
-parser.add_argument('username', help = 'This field cannot be blank', required = True)
+parser.add_argument('email', help = 'This field cannot be blank', required = True)
 parser.add_argument('password', help = 'This field cannot be blank', required = True)
 
 class UserRegistration(Resource):
@@ -15,12 +15,16 @@ class UserRegistration(Resource):
 
         # Mount exam object
         
-        if User.find_by_username(data['username']):
-          return 'User {} already exists'. format(data['username'])
+        if User.find_by_email(data['email']):
+          return 'User {} already exists'. format(data['email'])
 
-        posted_user = UserSchema(only=('username', 'password')).load(request.get_json())
+        posted_user = UserSchema(only=('email', 'password')).load(request.get_json())
         # return posted_user.data["password"]
         posted_user.data["password"] = User.generate_hash(posted_user.data["password"])
+
+        # Set a defaul role for now
+        # TODO: later add roles
+        posted_user.data["role"] = "normal user"
         # return posted_user
 
         try:
@@ -34,31 +38,24 @@ class UserRegistration(Resource):
             # Return created User
             new_user = UserSchema().dump(user).data
             session.close()
-            print ("here")
-            # return new_user, 201
-            access_token = create_access_token(identity = data['username'])
-            refresh_token = create_refresh_token(identity = data['username'])
-            # return {
-            #     'message': 'User {} was created'.format(data['username']),
-            #     'access_token': access_token,
-            #     'refresh_token': refresh_token
-            # }
-            return 'User {} was created'.format(data['username']), 201   
+            access_token = create_access_token(identity = data['email'])
+            refresh_token = create_refresh_token(identity = data['email'])
+            return 'User {} was created'.format(data['email']), 201   
         except:
             return 'Something went wrong', 500 
 
 class UserLogin(Resource):
     def post(self):
         data = parser.parse_args()
-        current_user = User.find_by_username(data['username'])
+        current_user = User.find_by_email(data['email'])
         if not current_user:
-            return 'User {} doesn\'t exist'.format(data['username'])
+            return 'User {} doesn\'t exist'.format(data['email'])
 
         if User.verify_hash(data['password'], current_user.password):
-            access_token = create_access_token(identity = data['username'])
-            refresh_token = create_refresh_token(identity = data['username'])
+            access_token = create_access_token(identity = data['email'])
+            refresh_token = create_refresh_token(identity = data['email'])
             return {
-                    'message': 'Logged in as {}'.format(current_user.username),
+                    'message': 'Logged in as {}'.format(current_user.email),
                     'access_token': access_token, 
                     'refresh_token': refresh_token
             }
@@ -71,7 +68,7 @@ class AllUsers(Resource):
     def get(self):
         # Fetching from the database
         session = Session()
-        user_objects = session.query(User).all()
+        user_objects = session.query(User.id, User.email, User.role).all()
         
         # Transforming into JSON-serializable objects
         schema = UserSchema(many=True)

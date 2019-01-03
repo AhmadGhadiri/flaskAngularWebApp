@@ -12,22 +12,23 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String)
     password = Column(String)
+    email = Column(String)
+    role = Column(String)
 
-    def __init__(self, username, password):
-        self.username = username
+    def __init__(self, password, email, role):
         self.password = password
+        self.email = email
+        self.role = role
 
     @classmethod
-    def find_by_username(cls, username):
+    def find_by_email(cls, email):
         # Fetching from the database
         session = Session()
-        registered_user = session.query(User).filter_by(username=username).first() 
+        registered_user = session.query(User).filter_by(email=email).first() 
 
         # Serializing as JSON
         session.close()
-
         return registered_user
     
     @staticmethod
@@ -41,7 +42,8 @@ class User(Base):
 
 class UserSchema(Schema):
     id = fields.Number()
-    username = fields.Str()
+    email = fields.Str()
     password = fields.Str()
+    role = fields.Str()
 
 
