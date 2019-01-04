@@ -4,12 +4,16 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api, Resource
 from flask_jwt_extended import JWTManager
-from entities.entity import Session, engine, Base
+from models.entity import Session, engine, Base
+# from entities.role import Role, roles_parents
+
+from flask_rbac import RBAC
 
 # Creating the Flask application
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
+# RBAC(app)
 
 # Authorization with jwt
 app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'

@@ -2,10 +2,9 @@
 
 from sqlalchemy import Column, String
 from marshmallow import Schema, fields
-from entities.entity import Session
 from sqlalchemy import create_engine, Column, String, Integer, DateTime
 
-from .entity import Base
+from .entity import Base, Session
 
 
 class Exam(Base):

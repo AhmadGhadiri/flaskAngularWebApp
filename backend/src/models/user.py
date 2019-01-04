@@ -4,9 +4,8 @@ from sqlalchemy import Column, String
 from marshmallow import Schema, fields
 from sqlalchemy import create_engine, Column, String, Integer, DateTime
 from passlib.hash import pbkdf2_sha256 as sha256
-from entities.entity import Session
 
-from .entity import Base
+from .entity import Base, Session
 
 class User(Base):
     __tablename__ = 'users'

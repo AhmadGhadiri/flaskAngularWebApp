@@ -2,8 +2,8 @@ from flask import request
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
-from entities.entity import Session
-from entities.user import User, UserSchema
+from models.entity import Session
+from models.user import User, UserSchema
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', help = 'This field cannot be blank', required = True)

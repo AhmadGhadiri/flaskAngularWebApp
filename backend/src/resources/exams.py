@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
-from entities.entity import Session
-from entities.exam import Exam, ExamSchema
+from models.entity import Session
+from models.exam import Exam, ExamSchema
 
 class exams(Resource):
   def get(self):
