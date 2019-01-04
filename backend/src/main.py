@@ -5,9 +5,6 @@ from flask_cors import CORS
 from flask_restful import Api, Resource
 from flask_jwt_extended import JWTManager
 from entities.entity import Session, engine, Base
-from entities.exam import Exam, ExamSchema
-from entities.user import User, UserSchema
-
 
 # Creating the Flask application
 app = Flask(__name__)
