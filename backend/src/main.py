@@ -5,6 +5,8 @@ from flask_cors import CORS
 from flask_restful import Api, Resource
 from flask_jwt_extended import JWTManager
 from models.entity import Session, engine, Base
+from models.user import User, UserSchema
+from models.exam import Exam, ExamSchema
 # from entities.role import Role, roles_parents
 
 from flask_rbac import RBAC
