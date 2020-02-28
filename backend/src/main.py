@@ -1,49 +1,44 @@
 # coding=utf-8
 
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
+from flask_restful import Api, Resource
+from flask_jwt_extended import JWTManager
+from models.entity import Session, engine, Base
+from models.user import User, UserSchema
+from models.exam import Exam, ExamSchema
+# from entities.role import Role, roles_parents
 
-from entities.entity import Session, engine, Base
-from entities.exam import Exam, ExamSchema
-
+from flask_rbac import RBAC
 
 # Creating the Flask application
 app = Flask(__name__)
+api = Api(app)
 CORS(app)
+# RBAC(app)
 
-# generate database schema
+# Authorization with jwt
+app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+jwt = JWTManager(app)
+
+# generate database schema 
+# it is important to import all the schemas before
+# this to create them all
 Base.metadata.create_all(engine)
 
-@app.route('/exams')
-def get_exams():
-  # Fetching from the database
-  session = Session()
-  exam_objects = session.query(Exam).all()
-  
-  # Transforming into JSON-serializable objects
-  schema = ExamSchema(many=True)
-  exams = schema.dump(exam_objects)
+class HelloWorld(Resource):
+    def get(self):
+        return {'hello': 'word'}
 
-  # Serializing as JSON
-  session.close()
-  return jsonify(exams.data)  
 
-@app.route('/exams', methods = ['POST'])
-def add_exam():
-  # Mount exam object
-  posted_exam = ExamSchema(only=('title', 'description')).load(request.get_json())
+from resources import exams, users
+api.add_resource(HelloWorld, '/')
+api.add_resource(exams.exams, '/exams')
+api.add_resource(users.UserRegistration, '/register')
+api.add_resource(users.UserLogin, '/login')
+api.add_resource(users.AllUsers, '/users')
 
-  exam = Exam(**posted_exam.data, created_by = "HTTP post request")
 
-  # Persist exam
-  session = Session()
-  session.add(exam)
-  session.commit()
-  
-  # Return created exam
-  new_exam = ExamSchema().dump(exam).data
-  session.close()
-  return jsonify(new_exam), 201
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
