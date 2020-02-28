@@ -1,7 +1,9 @@
 FROM python:3.7.6-alpine3.10 as builder
 
 
+# Needed for psycopg2-binary
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
 WORKDIR /app
 COPY requirements.txt /app
 
