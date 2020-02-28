@@ -4,8 +4,7 @@ FROM node:latest
 RUN node --version
 
 # Install the angular cli
-RUN npm install -g @angular/cli@7.1.2
-RUN ng --version
+RUN npm install -g @angular/cli@9.0.4
 
 
 
@@ -13,10 +12,12 @@ RUN ng --version
 WORKDIR /app
 
 # add the current directory to the container as /app
-ADD . /app
+COPY package.json /app
 
 # execute everyone's favorite pip command, pip install -r
 RUN npm install
+
+COPY . /app
 
 # unblock port 80 for the Flask app to run on
 # EXPOSE 80

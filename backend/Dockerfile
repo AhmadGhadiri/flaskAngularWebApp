@@ -1,25 +1,16 @@
-# this is an official Python runtime, used as the parent image
-FROM alpine:3.7 
+FROM python:3.7.6-alpine3.10 as builder
 
-# set the working directory in the container to /app
+
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 WORKDIR /app
+COPY requirements.txt /app
 
-# add the current directory to the container as /app
-ADD . /app
-
-# execute everyone's favorite pip command, pip install -r
-RUN apk add --no-cache libffi-dev 
-RUN echo "http://dl-8.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN \
- apk add --no-cache python3 postgresql-libs && \
- apk add --no-cache --virtual .build-deps libc-dev unixodbc-dev g++ musl-dev postgresql-dev && \
- apk add --no-cache python3-dev && \
- apk add --no-cache py-pip build-base
 
 # Adding this back for the wait-for-postgres file
 RUN apk add --update postgresql-client && rm -rf /var/cache/apk/*
 
 RUN python3 -m pip install --trusted-host pypi.python.org -r requirements.txt  
 
+COPY . /app
 # execute the Flask app
 CMD ["python", "src/main.py"]

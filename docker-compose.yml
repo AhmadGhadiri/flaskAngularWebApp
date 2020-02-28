@@ -39,6 +39,8 @@ services:
     depends_on:
       - postgresdb
     command: ./wait-for-postgres.sh postgresdb python3 src/main.py
+    # volumes:
+    #   - ./backend:/app
 
 ###################################
 #  set up frontend container
@@ -53,6 +55,8 @@ services:
     depends_on:
       - server
     command: ng serve --host 0.0.0.0 
+    # volumes:
+    #   - ./frontend:/app
 
 ###################################
 #  set up nginx container

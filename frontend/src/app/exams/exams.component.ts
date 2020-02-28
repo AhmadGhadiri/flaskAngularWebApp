@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+// import {Subscription} from 'rxjs/Subscription';
+import {Observable, SubscriptionLike} from 'rxjs';
 import {Exam} from './exam.model';
 import {ExamsApiService} from './exams-api.service';
 
@@ -17,7 +18,7 @@ import {ExamsApiService} from './exams-api.service';
   `
 })
 export class ExamsComponent implements OnInit, OnDestroy {
-  examsListSubs: Subscription;
+  examsListSubs: SubscriptionLike;
   examsList: Exam[];
 
   constructor(private examsApi: ExamsApiService) {
