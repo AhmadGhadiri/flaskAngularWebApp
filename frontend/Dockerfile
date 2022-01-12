@@ -1,10 +1,10 @@
 # this is an official Python runtime, used as the parent image
-FROM node:latest
+FROM node:16.13.2
 
 RUN node --version
 
 # Install the angular cli
-RUN npm install -g @angular/cli@9.0.4
+RUN npm install -g @angular/cli@13.1.2
 
 
 
