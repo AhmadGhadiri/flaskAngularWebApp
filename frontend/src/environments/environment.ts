@@ -2,8 +2,17 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
 export const environment = {
-  production: false
+  production: false,  
+  auth: {
+    domain: "dev-3q2iu3in.us.auth0.com",
+    audience: "https://online-exam.digituz.com",
+    clientId: "xPNhmEQwpANbaj9jbiZkkrg5uy3Ngw06",
+    redirectUri: "http://localhost:4200/callback",
+    // scope: "openid profile manage:exams",
+    // serverUrl: "http://localhost:6060",
+  },
 };
 
 /*
