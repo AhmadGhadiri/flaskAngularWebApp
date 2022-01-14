@@ -16,16 +16,6 @@ services:
       - POSTGRES_DB=online-exam
       - POSTGRES_PASSWORD=0NLIN3-ex4m
 
-
-###################################
-#  set up test database container
-###################################
-  testdb:
-    build: ./testDB
-    depends_on:
-      - postgresdb
-    command: ./wait-for-postgres.sh postgresdb psql postgresql://postgres:0NLIN3-ex4m@postgresdb/online-exam 
-
 ###################################
 #  set up backend container
 ###################################
